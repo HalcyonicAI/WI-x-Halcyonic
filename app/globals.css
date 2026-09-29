@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens taken from the live Wajie Ibrahim storefront (inspected 29 Sep 2026):
+ *  - Typeface: Bricolage Grotesque (300/400/500/700)
+ *  - Ink #000 on #FFF; secondary text #666; hairlines #DEDEDE; section dividers solid 1px black
+ *  - Product-info panel grey #EBEAEB; secondary button cream #FCF7F1
+ *  - Square corners everywhere; uppercase buttons, nav and headings
+ */
+@theme {
+  --font-sans: var(--font-bricolage), "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-muted: #666666;
+  /* Lightest text grey that still meets WCAG AA (4.5:1) on white, cream and #EBEAEB. */
+  --color-subtle: #696969;
+  --color-line: #dedede;
+  --color-panel: #ebeaeb;
+  --color-cream: #fcf7f1;
+  --color-mist: #f6f6f5;
+  --color-studio: #eeece8;
+  --color-danger: #8f2a33;
+  --color-ok: #2f5d46;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1.5;
+
+  --ease-wi: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --animate-fade-up: fade-up 0.5s var(--ease-wi) both;
+  --animate-fade-in: fade-in 0.4s var(--ease-wi) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+/*
+ * The storefront's three heading styles (measured on wajieibrahim.com):
+ *  product H1 48/700 · page heading 48/400 ("BESPOKE TAILORING BOOKING") · section heading 32/500
+ */
+@layer components {
+  .wi-h-product {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .wi-h-page {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.08;
+    text-transform: uppercase;
+  }
+  .wi-h-section {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  @media (min-width: 640px) {
+    .wi-h-product,
+    .wi-h-page {
+      font-size: 48px;
+    }
+    .wi-h-section {
+      font-size: 32px;
+    }
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #000;
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 1px solid #000;
+  outline-offset: 3px;
+}
+
+/* Thin progress line used by the AI stages. */
+@keyframes wi-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.wi-progress-line {
+  transform-origin: left;
+  animation: wi-progress var(--wi-stage-ms, 1200ms) linear forwards;
+}
+
+/* Sketch-drawing placeholder shown while a design is being generated. */
+@keyframes wi-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.wi-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: wi-draw 2.8s var(--ease-wi) infinite alternate;
+}
+
+@keyframes wi-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.wi-breathe {
+  animation: wi-breathe 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  .wi-draw {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Hide number-input spinners & native details marker. */
+summary::-webkit-details-marker {
+  display: none;
+}
+summary {
+  list-style: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
